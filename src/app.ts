@@ -1,12 +1,12 @@
 import * as BABYLON from "babylonjs";
-import { setupMovementControls } from "./movement";
+import { Player } from "./player";
 
 export class App {
   engine: BABYLON.Engine;
   scene: BABYLON.Scene;
   canvas: HTMLCanvasElement;
   camera: BABYLON.FreeCamera;
-
+  player: Player;
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.engine = new BABYLON.Engine(canvas);
@@ -15,7 +15,7 @@ export class App {
     });
     this.scene = createScene(this.engine, this.canvas);
     this.camera = this.scene.activeCamera as BABYLON.FreeCamera;
-    setupMovementControls(this.scene, this.camera);
+    this.player = new Player(this.scene);
   }
 
   debug(debugOn: boolean = true) {
