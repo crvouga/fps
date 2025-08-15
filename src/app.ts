@@ -34,6 +34,18 @@ const createScene = (engine: BABYLON.Engine, canvas: HTMLCanvasElement) => {
   const scene = new BABYLON.Scene(engine);
   scene.collisionsEnabled = true;
 
+  const camera = createCamera(scene);
+  camera.attachControl(canvas, true);
+
+  createHemisphericLight(scene);
+  createDirectionalLight(scene);
+  createPointLight(scene);
+  createGround(scene);
+
+  return scene;
+};
+
+const createCamera = (scene: BABYLON.Scene) => {
   const camera = new BABYLON.FreeCamera(
     "camera1",
     new BABYLON.Vector3(0, 5, -10),
@@ -42,21 +54,38 @@ const createScene = (engine: BABYLON.Engine, canvas: HTMLCanvasElement) => {
   camera.checkCollisions = true;
   camera.applyGravity = true;
   camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
-
   camera.setTarget(BABYLON.Vector3.Zero());
+  return camera;
+};
 
-  camera.attachControl(canvas, true);
-
-  const light = new BABYLON.HemisphericLight(
-    "light",
+const createHemisphericLight = (scene: BABYLON.Scene) => {
+  const hemisphericLight = new BABYLON.HemisphericLight(
+    "hemisphericLight",
     new BABYLON.Vector3(0, 1, 0),
     scene
   );
+  hemisphericLight.intensity = 0.7;
+  return hemisphericLight;
+};
 
-  light.intensity = 0.7;
-  createGround(scene);
+const createDirectionalLight = (scene: BABYLON.Scene) => {
+  const directionalLight = new BABYLON.DirectionalLight(
+    "directionalLight",
+    new BABYLON.Vector3(-1, -2, -1),
+    scene
+  );
+  directionalLight.intensity = 0.5;
+  return directionalLight;
+};
 
-  return scene;
+const createPointLight = (scene: BABYLON.Scene) => {
+  const pointLight = new BABYLON.PointLight(
+    "pointLight",
+    new BABYLON.Vector3(0, 10, 0),
+    scene
+  );
+  pointLight.intensity = 0.3;
+  return pointLight;
 };
 
 const createGround = (scene: BABYLON.Scene) => {
