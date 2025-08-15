@@ -1,9 +1,11 @@
 import * as BABYLON from "babylonjs";
+import { setupMovementControls } from "./movement";
 
 export class App {
   engine: BABYLON.Engine;
   scene: BABYLON.Scene;
   canvas: HTMLCanvasElement;
+  camera: BABYLON.FreeCamera;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -12,6 +14,8 @@ export class App {
       this.engine.resize();
     });
     this.scene = createScene(this.engine, this.canvas);
+    this.camera = this.scene.activeCamera as BABYLON.FreeCamera;
+    setupMovementControls(this.scene, this.camera);
   }
 
   debug(debugOn: boolean = true) {
@@ -55,6 +59,10 @@ const createCamera = (scene: BABYLON.Scene) => {
   camera.applyGravity = true;
   camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
   camera.setTarget(BABYLON.Vector3.Zero());
+  camera.keysUp = []; // Disable default keyboard controls
+  camera.keysDown = [];
+  camera.keysLeft = [];
+  camera.keysRight = [];
   return camera;
 };
 
